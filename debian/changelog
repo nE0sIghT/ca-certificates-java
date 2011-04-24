@@ -1,0 +1,105 @@
+ca-certificates-java (20100412) unstable; urgency=low
+
+  * Upload to unstable.
+
+ -- Matthias Klose <doko@ubuntu.com>  Mon, 12 Apr 2010 03:15:47 +0200
+
+ca-certificates-java (20100406ubuntu1) lucid; urgency=low
+
+  * Make the installation and import of certificates more robust,
+    if the NSS based security provider is disabled or not built.
+
+ -- Matthias Klose <doko@ubuntu.com>  Sun, 11 Apr 2010 20:54:43 +0200
+
+ca-certificates-java (20100406) unstable; urgency=low
+
+  * Explicitely fail the installation, if /proc is not mounted.
+    Currently required by the java tools, changed in OpenJDK7.
+    Closes: #576453. LP: #556044.
+  * Print name of JVM in case of errors.
+  * Set priority to optional, set section to java. Closes: #566855.
+  * Remove /etc/ssl/certs on package purge, if empty. Closes: #566853.
+
+ -- Matthias Klose <doko@debian.org>  Tue, 06 Apr 2010 21:41:39 +0200
+
+ca-certificates-java (20091021) unstable; urgency=low
+
+  * Clarify output for keytool errors (although it shouldnn't be
+    necessary anymore). Closes: #540490.
+
+ -- Matthias Klose <doko@ubuntu.com>  Wed, 21 Oct 2009 22:00:53 +0200
+
+ca-certificates-java (20090928) karmic; urgency=low
+
+  * Rebuild with OpenJDK supporting PKCS11 cryptography, rebuild with
+    ca-certificates 20090814.
+
+ -- Matthias Klose <doko@ubuntu.com>  Mon, 28 Sep 2009 16:47:09 +0200
+
+ca-certificates-java (20090629) unstable; urgency=low
+
+  * debian/rules, debian/postinst, debian/jks-keystore.hook: Filter out
+    SHA384withECDSA certificates since keytool won't support them.
+    LP: #392104, closes: #534520.
+  * Fix typo in hook. Closes: #534533.
+  * Use java6-runtime-headless as alternative dependency. Closes: #512293.
+
+ -- Matthias Klose <doko@ubuntu.com>  Mon, 29 Jun 2009 11:27:59 +0200
+
+ca-certificates-java (20081028) unstable; urgency=low
+
+  * Ignore LANG and LC_ALL setting when running keytool. LP: #289934.
+
+ -- Matthias Klose <doko@debian.org>  Tue, 28 Oct 2008 07:20:16 +0100
+
+ca-certificates-java (20081027) unstable; urgency=medium
+
+  * Merge from Ubuntu:
+    - Don't try to import certificates, which are listed in
+      /etc/ca-certificates.conf, but not available on the system.
+      Just warn about those. LP: #289091.
+    - Need to run keytool, when the jre is unpacked, but not yet configured.
+      Create a temporary jvm.cfg for the time in that postinst and the
+      jks-keystore.hook are run, and remove it afterwards. LP: #289199.
+
+ -- Matthias Klose <doko@debian.org>  Mon, 27 Oct 2008 13:58:14 +0100
+
+ca-certificates-java (20081024) unstable; urgency=low
+
+  * Install /etc/default/cacerts with mode 600.
+
+ -- Matthias Klose <doko@debian.org>  Fri, 24 Oct 2008 15:10:48 +0200
+
+ca-certificates-java (20081022) unstable; urgency=low
+
+  * debian/jks-keystore.hook:
+    - Don't stop after first error during the update. LP: #244412.
+      Closes: #489748.
+    - Call keytool with -noprompt.
+  * On initial install, add locally added certificates. LP: #244410.
+    Closes: #489748.
+  * Install /etc/default/cacerts to set options:
+    - storepass, holding the password for the keystore.
+    - updates, to enable/disable updates of the keystore.
+  * Only use the keytool command from OpenJDK or Sun Java. Closes: #496587.
+
+ -- Matthias Klose <doko@ubuntu.com>  Wed, 22 Oct 2008 20:51:24 +0200
+
+ca-certificates-java (20080712) unstable; urgency=low
+
+  * Upload to main.
+
+ -- Matthias Klose <doko@ubuntu.com>  Sat, 12 Jul 2008 12:19:00 +0200
+
+ca-certificates-java (20080711) unstable; urgency=low
+
+  * debian/jks-keystore.hook: Fix typo. Closes: #489747, LP: #244408.
+
+ -- Matthias Klose <doko@ubuntu.com>  Fri, 11 Jul 2008 20:38:04 +0200
+
+ca-certificates-java (20080514) unstable; urgency=low
+
+  * Initial release.
+
+ -- Matthias Klose <doko@ubuntu.com>  Mon, 02 Jun 2008 14:52:46 +0000
+

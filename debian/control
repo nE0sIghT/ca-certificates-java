@@ -1,0 +1,15 @@
+Source: ca-certificates-java
+Section: java
+Priority: optional
+Maintainer: OpenJDK Team <openjdk@lists.launchpad.net>
+Uploaders: Matthias Klose <doko@ubuntu.com>
+Build-Depends: debhelper (>= 6), ca-certificates (>= 20090814), openjdk-6-jre-headless (>= 6b16-1.6.1-2)
+Standards-Version: 3.8.4
+
+Package: ca-certificates-java
+Architecture: all
+Depends: ca-certificates (>= 20090814), openjdk-6-jre-headless (>= 6b16-1.6.1-2) | java6-runtime-headless, ${misc:Depends}
+Recommends: libnss3-1d
+Description: Common CA certificates (JKS keystore)
+ This package uses the hooks of the ca-certificates package to update the
+ cacerts JKS keystore used for many java runtimes.
