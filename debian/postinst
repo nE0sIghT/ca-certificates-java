@@ -16,6 +16,9 @@ setup_path()
     done
     export JAVA_HOME=/usr/lib/jvm/$jvm
     PATH=$JAVA_HOME/bin:$PATH
+
+    CLASSPATH=/usr/share/ca-certificates-java
+    export CLASSPATH
 }
 
 first_install()
