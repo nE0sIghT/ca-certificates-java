@@ -1,3 +1,12 @@
+ca-certificates-java (20110425) unstable; urgency=low
+
+  UNRELEASED
+  * Add Java code to update the keystore. (Closes: #623671)
+  * Change Maintainer to Debian Java Maintainers and add myself to Uploaders.
+  * Update Build-Depends.
+
+ -- Torsten Werner <twerner@debian.org>  Mon, 25 Apr 2011 00:29:23 +0200
+
 ca-certificates-java (20100412) unstable; urgency=low
 
   * Upload to unstable.

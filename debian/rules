@@ -4,47 +4,20 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+JAVA_HOME := /usr/lib/jvm/default-java
+
 d = debian/ca-certificates-java
 
 build: build-stamp
 build-stamp:
 	dh_testdir
-	rm -rf build
-	mkdir -p build
-	set -e; \
-	yes | \
-	for crt in $$(find /usr/share/ca-certificates -name '*.crt' -printf '%P '); do \
-	  alias=$$(basename $$crt .crt | tr A-Z a-z | tr -cs a-z0-9 _); \
-	  alias=$${alias%*_}; \
-	  echo "IMPORT: $$crt, alias=$$alias"; \
-	  if keytool -importcert -trustcacerts -keystore build/cacerts \
-	    -storepass 'changeit' \
-	    -alias "$$alias" -file "/usr/share/ca-certificates/$$crt" > keytool.log 2>&1; \
-	  then \
-	    cat keytool.log; \
-	  elif keytool -importcert -trustcacerts -keystore build/cacerts \
-	    -providerClass sun.security.pkcs11.SunPKCS11 \
-	    -providerArg '$${java.home}/lib/security/nss.cfg' \
-	    -storepass 'changeit' \
-	    -alias "$$alias" -file "/usr/share/ca-certificates/$$crt" > keytool.log 2>&1; \
-	  then \
-	    cat keytool.log; \
-	  elif grep -q 'Signature not available' keytool.log; then \
-	    echo "IGNORED IMPORT: $$crt, alias=$$alias"; \
-	    cat keytool.log; \
-	  else \
-	    cat keytool.log; \
-	    false; \
-	  fi; \
-	done
+	$(JAVA_HOME)/bin/javac UpdateCertificates.java
 	touch $@
 
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp
-	rm -rf build
-	rm -f keytool.log
+	$(RM) build-stamp UpdateCertificates.class
 	dh_clean 
 
 install: build
@@ -59,10 +32,9 @@ install: build
 
 	install -m755 debian/jks-keystore.hook \
 		$(d)/etc/ca-certificates/update.d/jks-keystore
-	install -m644 build/cacerts \
-		$(d)/usr/share/ca-certificates-java/
 	install -m600 debian/default \
 		$(d)/etc/default/cacerts
+	dh_install UpdateCertificates.class /usr/share/ca-certificates-java/
 
 # Build architecture-independent files here.
 binary-indep: build install
