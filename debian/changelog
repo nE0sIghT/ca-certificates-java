@@ -1,13 +1,13 @@
 ca-certificates-java (20110425) unstable; urgency=low
 
-  UNRELEASED
   * Add Java code to update the keystore and support UTF-8 encoded filenames.
     (Closes: #607245, #623671)
   * Change Maintainer to Debian Java Maintainers and add myself to Uploaders.
   * Update Build-Depends.
   * Replace old inconsistent keystore aliases. (Closes: #623888)
+  * Add support for openjdk-7 and remove support for old cacao VM.
 
- -- Torsten Werner <twerner@debian.org>  Mon, 25 Apr 2011 12:32:02 +0200
+ -- Torsten Werner <twerner@debian.org>  Mon, 25 Apr 2011 15:10:42 +0200
 
 ca-certificates-java (20100412) unstable; urgency=low
 
