@@ -46,7 +46,6 @@ case "$1" in
         if [ -z "$2" -o -n "$FIXOLD" ]; then
 	    setup_path
 
-            # TODO: check if we really need it
 	    if ! mountpoint -q /proc; then
 		echo >&2 "the keytool command requires a mounted proc fs (/proc)."
 		exit 1
