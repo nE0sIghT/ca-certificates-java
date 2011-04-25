@@ -6,8 +6,9 @@ ca-certificates-java (20110425) unstable; urgency=low
   * Update Build-Depends.
   * Replace old inconsistent keystore aliases. (Closes: #623888)
   * Add support for openjdk-7 and remove support for old cacao VM.
+  * Add a NEWS file explaining the update.
 
- -- Torsten Werner <twerner@debian.org>  Mon, 25 Apr 2011 15:10:42 +0200
+ -- Torsten Werner <twerner@debian.org>  Mon, 25 Apr 2011 15:21:58 +0200
 
 ca-certificates-java (20100412) unstable; urgency=low
 
