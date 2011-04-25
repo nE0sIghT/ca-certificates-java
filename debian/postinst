@@ -34,13 +34,7 @@ first_install()
         echo "+${filename}"
     done | \
     java UpdateCertificates -storepass "$storepass"
-    if [ $errors -gt 0 ]; then
-	echo >&2 "failed (VM used: $jvm)."
-	[ -z "$temp_jvm_cfg" ] || rm -f $temp_jvm_cfg
-	exit 1
-    fi
     echo "done."
-    )
 }
 
 case "$1" in
@@ -65,10 +59,6 @@ case "$1" in
 		printf -- "-server KNOWN\n" > $temp_jvm_cfg
 	    fi
 
-	    # on first install, remove certs untrusted by the
-	    # user/admininstrator, add locally added certs
-	    echo "creating $KEYSTORE..."
-	    cp /usr/share/ca-certificates-java/cacerts $KEYSTORE
 	    first_install
 
 	    [ -z "$temp_jvm_cfg" ] || rm -f $temp_jvm_cfg
