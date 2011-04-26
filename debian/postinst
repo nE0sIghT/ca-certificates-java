@@ -41,7 +41,9 @@ case "$1" in
     configure)
         if dpkg --compare-versions "$2" le "20100412"; then
             FIXOLD="true"
-            cp -f /etc/ssl/certs/java/cacerts /etc/ssl/certs/java/cacerts.dpkg-old
+            if [ -e /etc/ssl/certs/java/cacerts ]; then
+                cp -f /etc/ssl/certs/java/cacerts /etc/ssl/certs/java/cacerts.dpkg-old
+            fi
         fi
         if [ -z "$2" -o -n "$FIXOLD" ]; then
 	    setup_path
