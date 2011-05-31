@@ -23,6 +23,14 @@ setup_path()
 
 first_install()
 {
+    if which dpkg-query --version >/dev/null; then
+	nsspkg=$(dpkg-query -L libnss3 | sed -n 's,\(.*\)/libnss3\.so$,\1,p')
+	nssjdk=$(sed -n '/nssLibraryDirectory/s/.*= *\(.*\)/\1/p' /etc/$jvm/security/nss.cfg)
+	if [ "$nsspkg" != "$nssjdk" ]; then
+	    ln -sf $nsspkg/libnss3.so $nssjdk/libnss3.so
+	fi
+    fi
+
     find /etc/ssl/certs -name \*.pem | \
     while read filename; do
 	alias=$(basename $filename .pem | tr A-Z a-z | tr -cs a-z0-9 _)
@@ -35,6 +43,14 @@ first_install()
     done | \
     java UpdateCertificates -storepass "$storepass"
     echo "done."
+}
+
+do_cleanup()
+{
+    [ -z "$temp_jvm_cfg" ] || rm -f $temp_jvm_cfg
+    if [ "$nsspkg" != "$nssjdk" ]; then
+	rm -f $nssjdk/libnss3.so
+    fi
 }
 
 case "$1" in
@@ -60,9 +76,12 @@ case "$1" in
 		printf -- "-server KNOWN\n" > $temp_jvm_cfg
 	    fi
 
-	    first_install
-
-	    [ -z "$temp_jvm_cfg" ] || rm -f $temp_jvm_cfg
+	    if first_install; then
+		do_cleanup
+	    else
+		do_cleanup
+		exit 1
+	    fi
 	fi
 	chmod 600 /etc/default/cacerts || true
     ;;

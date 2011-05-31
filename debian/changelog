@@ -1,3 +1,9 @@
+ca-certificates-java (20110531) unstable; urgency=low
+
+  * Prepare for multiarch libnss3 update.
+
+ -- Matthias Klose <doko@ubuntu.com>  Tue, 31 May 2011 15:20:52 +0200
+
 ca-certificates-java (20110426) unstable; urgency=low
 
   * Test for existing file in postinst before copying it. (Closes: #624152)
