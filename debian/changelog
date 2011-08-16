@@ -1,3 +1,10 @@
+ca-certificates-java (20110816) unstable; urgency=low
+
+  * Upgrade Recommends: libnss3-1d to a versioned Depends due to multiarch
+    changes. (Closes: #635571)
+
+ -- Torsten Werner <twerner@debian.org>  Tue, 16 Aug 2011 10:44:33 +0200
+
 ca-certificates-java (20110531) unstable; urgency=low
 
   * Prepare for multiarch libnss3 update.

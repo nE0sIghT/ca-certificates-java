@@ -10,8 +10,9 @@ Vcs-Browser: http://svn.debian.org/wsvn/pkg-java/trunk/ca-certificates-java/
 
 Package: ca-certificates-java
 Architecture: all
-Depends: ca-certificates (>= 20090814), openjdk-6-jre-headless (>= 6b16-1.6.1-2) | java6-runtime-headless, ${misc:Depends}
-Recommends: libnss3-1d
+Depends: ca-certificates (>= 20090814), openjdk-6-jre-headless (>= 6b16-1.6.1-2) | java6-runtime-headless, ${misc:Depends}, libnss3-1d (>= 3.12.10-2~)
+# We need a versioned Depends due to multiarch changes (bug #635571).
+#Recommends: libnss3-1d
 Description: Common CA certificates (JKS keystore)
  This package uses the hooks of the ca-certificates package to update the
  cacerts JKS keystore used for many java runtimes.
