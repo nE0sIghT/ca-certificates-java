@@ -2,8 +2,9 @@ ca-certificates-java (20110816) unstable; urgency=low
 
   * Upgrade Recommends: libnss3-1d to a versioned Depends due to multiarch
     changes. (Closes: #635571)
+  * Use the locale C.UTF-8 for the hook script to be more robust.
 
- -- Torsten Werner <twerner@debian.org>  Tue, 16 Aug 2011 10:44:33 +0200
+ -- Torsten Werner <twerner@debian.org>  Tue, 16 Aug 2011 11:00:33 +0200
 
 ca-certificates-java (20110531) unstable; urgency=low
 
