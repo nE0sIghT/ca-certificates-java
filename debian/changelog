@@ -1,8 +1,9 @@
 ca-certificates-java (20110912) unstable; urgency=low
 
   * Support new multiarch JRE packages in jks-keystore. (Closes: #641306)
+  * Support OpenJDK 7. (Closes: #641305)
 
- -- Torsten Werner <twerner@debian.org>  Mon, 12 Sep 2011 20:49:07 +0200
+ -- Torsten Werner <twerner@debian.org>  Mon, 12 Sep 2011 21:23:22 +0200
 
 ca-certificates-java (20110816) unstable; urgency=low
 
