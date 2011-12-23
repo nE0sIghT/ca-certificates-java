@@ -9,12 +9,12 @@ fi
 
 setup_path()
 {
-    for jvm in java-6-openjdk java-7-openjdk java-6-sun; do
-	if [ -x /usr/lib/jvm/$jvm/bin/java ]; then
+    for JAVA_HOME in /usr/lib/jvm/java-[67]-openjdk* /usr/lib/jvm/java-6-sun; do
+        if [ -x $JAVA_HOME/bin/java ]; then
 	    break
-	fi
+        fi
     done
-    export JAVA_HOME=/usr/lib/jvm/$jvm
+    jvm=$(basename $JAVA_HOME | sed 's,-openjdk-.*,-openjdk,')   # multiarch fixup
     PATH=$JAVA_HOME/bin:$PATH
 
     CLASSPATH=/usr/share/ca-certificates-java
