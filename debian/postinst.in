@@ -2,6 +2,13 @@
 
 set -e
 
+# Disable a critically buggy hook script during upgrade; to be removed
+# after oneiric release
+if [ "$2" = 20110912ubuntu1 ] && [ -e /etc/ca-certificates/update.d/jks-keystore ]
+then
+	chmod +x /etc/ca-certificates/update.d/jks-keystore
+fi
+
 storepass='changeit'
 if [ -f /etc/default/cacerts ]; then
     . /etc/default/cacerts
@@ -24,7 +31,7 @@ setup_path()
 first_install()
 {
     if which dpkg-query --version >/dev/null; then
-	nsspkg=$(dpkg-query -L libnss3 | sed -n 's,\(.*\)/libnss3\.so$,\1,p')
+	nsspkg=$(dpkg-query -L @NSS_LIB@ | sed -n 's,\(.*\)/libnss3\.so$,\1,p')
 	nssjdk=$(sed -n '/nssLibraryDirectory/s/.*= *\(.*\)/\1/p' /etc/$jvm/security/nss.cfg)
 	if [ "$nsspkg" != "$nssjdk" ]; then
 	    ln -sf $nsspkg/libnss3.so $nssjdk/libnss3.so
@@ -48,7 +55,8 @@ first_install()
 do_cleanup()
 {
     [ -z "$temp_jvm_cfg" ] || rm -f $temp_jvm_cfg
-    if [ "$nsspkg" != "$nssjdk" ]; then
+    if [ -n "$nsspkg" ] && [ -n "$nssjdk" ] && [ "$nsspkg" != "$nssjdk" ]
+    then
 	rm -f $nssjdk/libnss3.so
     fi
 }

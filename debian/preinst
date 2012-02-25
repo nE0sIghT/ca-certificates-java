@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+# Disable a critically buggy hook script during upgrade; to be removed
+# after oneiric release
+if [ "$2" = 20110912ubuntu1 ] && [ -e /etc/ca-certificates/update.d/jks-keystore ]
+then
+	chmod -x /etc/ca-certificates/update.d/jks-keystore
+fi
+
+#DEBHELPER#
+

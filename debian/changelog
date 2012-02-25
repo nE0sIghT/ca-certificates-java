@@ -1,3 +1,27 @@
+ca-certificates-java (20120225) UNRELEASED; urgency=low
+
+  [ Steve Langasek ]
+  * debian/jks-keystore.hook: If we *don't* find libnss3 / libnss3-1d,
+    don't remove files from the filesystem in do_cleanup(),
+    since this has a nasty tendency of nuking system libraries.
+    LP: #855171.
+  * debian/preinst, debian/postinst: when upgrading from version
+    20110912ubuntu1, disable the buggy hook script early to prevent it from
+    being run before our new version is configured; and re-enable the script
+    in the postinst.  LP: #855246.
+
+  [ Matthias Klose ]
+  * Mark as Multi-Arch: foreign.
+  * Adjust the libnss3-1d versioned dependency.
+
+  [ Damien Raude-Morvan ]
+  * Add myself to Uploaders.
+  * Use dh_gencontrol and dpkg-vendor to allow:
+    - New substvar ${nss:Depends} for libnss3-1d versionning.
+    - New @NSS_LIB@ parameter for debian/*.in files.
+
+ -- Damien Raude-Morvan <drazzib@debian.org>  Sat, 25 Feb 2012 12:40:51 +0100
+
 ca-certificates-java (20111223) unstable; urgency=low
 
   * Support new multiarch JRE packages in postinst.

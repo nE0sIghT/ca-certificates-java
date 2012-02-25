@@ -4,6 +4,14 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
+	SUBSTVARS = -Vnss:Depends="libnss3-1d (>= 3.12.9+ckbi-1.82-0ubuntu3~)"
+	nss_lib = libnss3
+else
+	SUBSTVARS = -Vnss:Depends="libnss3-1d (>= 3.12.10-2~)"
+	nss_lib = libnss3-1d
+endif
+
 JAVA_HOME := /usr/lib/jvm/default-java
 
 d = debian/ca-certificates-java
@@ -18,7 +26,11 @@ clean:
 	dh_testdir
 	dh_testroot
 	$(RM) build-stamp UpdateCertificates.class
-	dh_clean 
+	dh_clean
+	for f in debian/*.in; do \
+	  f2=$$(echo $$f | sed ';s/\.in$$//'); \
+	  rm -f $$f2; \
+	done
 
 install: build
 	dh_testdir
@@ -28,8 +40,12 @@ install: build
 		usr/share/ca-certificates-java \
 		etc/default \
 		etc/ssl/certs/java \
-		etc/ca-certificates/update.d \
-
+		etc/ca-certificates/update.d
+	for f in debian/*.in; do \
+	  f2=$$(echo $$f | sed 's/\.in$$//'); \
+	  sed -e 's/@NSS_LIB@/$(nss_lib)/g' \
+	    $$f > $$f2; \
+	done
 	install -m755 debian/jks-keystore.hook \
 		$(d)/etc/ca-certificates/update.d/jks-keystore
 	install -m600 debian/default \
@@ -45,7 +61,7 @@ binary-indep: build install
 	dh_compress
 	dh_fixperms
 	dh_installdeb
-	dh_gencontrol
+	dh_gencontrol -- $(SUBSTVARS)
 	dh_md5sums
 	dh_builddeb
 

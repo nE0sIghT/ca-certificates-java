@@ -2,7 +2,7 @@ Source: ca-certificates-java
 Section: java
 Priority: optional
 Maintainer: Debian Java Maintainers <pkg-java-maintainers@lists.alioth.debian.org>
-Uploaders: Matthias Klose <doko@ubuntu.com>, Torsten Werner <twerner@debian.org>
+Uploaders: Matthias Klose <doko@ubuntu.com>, Torsten Werner <twerner@debian.org>, Damien Raude-Morvan <drazzib@debian.org>
 Build-Depends: debhelper (>= 6), default-jdk
 Standards-Version: 3.8.4
 Vcs-Svn: svn://svn.debian.org/svn/pkg-java/trunk/ca-certificates-java
@@ -10,7 +10,8 @@ Vcs-Browser: http://svn.debian.org/wsvn/pkg-java/trunk/ca-certificates-java/
 
 Package: ca-certificates-java
 Architecture: all
-Depends: ca-certificates (>= 20090814), openjdk-6-jre-headless (>= 6b16-1.6.1-2) | java6-runtime-headless, ${misc:Depends}, libnss3-1d (>= 3.12.10-2~)
+Multi-Arch: foreign
+Depends: ca-certificates (>= 20090814), openjdk-6-jre-headless (>= 6b16-1.6.1-2) | java6-runtime-headless, ${misc:Depends}, ${nss:Depends}
 # We need a versioned Depends due to multiarch changes (bug #635571).
 #Recommends: libnss3-1d
 Description: Common CA certificates (JKS keystore)
