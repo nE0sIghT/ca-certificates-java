@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian Java Maintainers <pkg-java-maintainers@lists.alioth.debian.org>
 Uploaders: Matthias Klose <doko@ubuntu.com>, Torsten Werner <twerner@debian.org>, Damien Raude-Morvan <drazzib@debian.org>
 Build-Depends: debhelper (>= 6), default-jdk
-Standards-Version: 3.8.4
+Standards-Version: 3.9.3
 Vcs-Svn: svn://svn.debian.org/svn/pkg-java/trunk/ca-certificates-java
 Vcs-Browser: http://svn.debian.org/wsvn/pkg-java/trunk/ca-certificates-java/
 

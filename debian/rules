@@ -16,6 +16,8 @@ JAVA_HOME := /usr/lib/jvm/default-java
 
 d = debian/ca-certificates-java
 
+build-arch: build
+build-indep: build
 build: build-stamp
 build-stamp:
 	dh_testdir
