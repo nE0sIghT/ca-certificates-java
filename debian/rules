@@ -21,7 +21,7 @@ build-indep: build
 build: build-stamp
 build-stamp:
 	dh_testdir
-	$(JAVA_HOME)/bin/javac UpdateCertificates.java
+	$(JAVA_HOME)/bin/javac -source 1.6 -target 1.6 UpdateCertificates.java
 	touch $@
 
 clean:

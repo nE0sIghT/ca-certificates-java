@@ -1,3 +1,32 @@
+ca-certificates-java (20120524) unstable; urgency=low
+
+  [ Marc Deslauriers ]
+  * debian/preinst, debian/postinst: remove the 20110912ubuntu1 work-around
+    since it is no longer needed.
+  * debian/postinst: don't put a symlink in / if jvm doesn't contain nss
+    configuration. (Closes: #665754, #665749).
+  * debian/postinst: force migration to new alias names again. The
+    migration was supposed to occur on upgrades to Oneiric, but failed
+    because of an NSS error.
+  * debian/postinst: forcibly remove diginotar cert. It could be left
+    behind under certain circumstances. (LP: #920758)
+  * debian/postinst: also look for jvm in multiarch locations (LP: #962378)
+  * debian/postinst: retrigger first_install to properly get cert store.
+
+  [ James Page ]
+  * d/rules: Ensure java is built with source/target == 1.6 for backwards
+    compatibility with openjdk-6. 
+
+  [ Damien Raude-Morvan ]
+  * Sync handling of nss.cfg between debian/jks-keystore.hook.in and
+    debian/postinst.in.
+  * Merge changes from Ubuntu (Thanks to James Page and Marc Deslauriers).
+  * Improve handling of certificate with UTF-8 filenames:
+    - UpdateCertificates: Force read System.in with UTF-8
+    - debian/postinst: Set LC_CTYPE to C.UTF-8
+
+ -- Damien Raude-Morvan <drazzib@debian.org>  Tue, 22 May 2012 23:41:41 +0200
+
 ca-certificates-java (20120225) unstable; urgency=low
 
   [ Steve Langasek ]

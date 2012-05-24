@@ -50,7 +50,8 @@ public class UpdateCertificates {
         password = passwordString.toCharArray();
         keystore = createKeyStore();
         certFactory = CertificateFactory.getInstance("X.509");
-        processChanges(new InputStreamReader(System.in));
+        // Force reading of inputstream int UTF-8
+        processChanges(new InputStreamReader(System.in, "UTF8"));
         writeKeyStore();
     }
 
