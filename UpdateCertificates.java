@@ -1,9 +1,6 @@
 /*
  * Copyright (C) 2011 Torsten Werner <twerner@debian.org>
- * 
- * This code is a re-implementation of the idea from Ludwig Nussel found in
- * http://gitorious.org/opensuse/ca-certificates/blobs/master/keystore.java
- * for the Debian operating system. It updates the global JVM keystore.
+ * Copyright (C) 2012 Damien Raude-Morvan <drazzib@debian.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,13 +27,27 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 
+/**
+ * This code is a re-implementation of the idea from Ludwig Nussel found in
+ * http://gitorious.org/opensuse/ca-certificates/blobs/master/keystore.java
+ * for the Debian operating system. It updates the global JVM keystore.
+ * 
+ * @author Torsten Werner
+ * @author Damien Raude-Morvan
+ */
 public class UpdateCertificates {
-    private static char[] password = null;
-    private static KeyStore keystore = null;
-    private static CertificateFactory certFactory = null;
+	
+    private char[] password = null;
+    
+    private String ksFilename = null;
+    
+    private KeyStore ks = null;
+    
+    private CertificateFactory certFactory = null;
     
     public static void main(String[] args) throws IOException, GeneralSecurityException {
         String passwordString = "changeit";
@@ -47,28 +58,43 @@ public class UpdateCertificates {
             System.err.println("Usage: java UpdateCertificates [-storepass <password>]");
             System.exit(1);
         }
-        password = passwordString.toCharArray();
-        keystore = createKeyStore();
-        certFactory = CertificateFactory.getInstance("X.509");
-        // Force reading of inputstream int UTF-8
-        processChanges(new InputStreamReader(System.in, "UTF8"));
-        writeKeyStore();
-    }
 
-    private static KeyStore createKeyStore() throws GeneralSecurityException, IOException {
+		try {
+			UpdateCertificates uc = new UpdateCertificates(passwordString, "/etc/ssl/certs/java/cacerts");
+	        // Force reading of inputstream in UTF-8
+	        uc.processChanges(new InputStreamReader(System.in, "UTF8"));
+	        uc.writeKeyStore();
+		} catch (Exceptions.InvalidKeystorePassword e) {
+			e.printStackTrace(System.err);
+			System.exit(1);
+		} catch (Exceptions.UnableToSaveKeystore e) {
+			e.printStackTrace(System.err);
+			System.exit(1);
+		}
+    }
+    
+    public UpdateCertificates(final String passwordString, final String keystoreFile) throws IOException, GeneralSecurityException, Exceptions.InvalidKeystorePassword {
+        this.password = passwordString.toCharArray();
+        this.ksFilename = keystoreFile;
+        this.ks = openKeyStore();
+        this.certFactory = CertificateFactory.getInstance("X.509");
+	}
+
+    /**
+     * Try to open a existing keystore or create an new one.
+     */
+    private KeyStore openKeyStore() throws GeneralSecurityException, IOException, Exceptions.InvalidKeystorePassword {
         KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
-        File certInputFile = new File ("/etc/ssl/certs/java/cacerts");
+        File certInputFile = new File(this.ksFilename);
         FileInputStream certInputStream = null;
         if (certInputFile.canRead()) {
             certInputStream = new FileInputStream(certInputFile);
         }
         try {
-            ks.load(certInputStream, password);
+            ks.load(certInputStream, this.password);
         }
         catch (IOException e) {
-            System.err.println("Cannot open Java keystore. Is the password correct? Message:\n  " +
-                e.getMessage());
-            System.exit(1);
+            throw new Exceptions.InvalidKeystorePassword("Cannot open Java keystore. Is the password correct?", e);
         }
         if (certInputStream != null) {
             certInputStream.close();
@@ -76,40 +102,40 @@ public class UpdateCertificates {
         return ks;
     }
     
-    private static void processChanges(Reader reader)
+    /**
+     * Until reader EOF, try to read changes and send each to {@link #parseLine(String)}.
+     */
+    protected void processChanges(final Reader reader)
             throws IOException, GeneralSecurityException {
         String line;
         BufferedReader bufferedStdinReader = new BufferedReader(reader);
         while((line = bufferedStdinReader.readLine()) != null) {
-            parseLine(line);
+        	try {
+        		parseLine(line);
+        	} catch (Exceptions.UnknownInput e) {
+        		System.err.println("Unknown input: " + line);
+        		// Keep processing for others lines
+        	}
         }
     }
     
-    private static void deleteAlias(String alias) throws GeneralSecurityException {
-        if (keystore.containsAlias(alias)) {
-            System.out.println("Removing " + alias);
-            keystore.deleteEntry(alias);
-        }
-    }
-    
-    private static void parseLine(String line)
-            throws GeneralSecurityException, IOException {
+    /**
+     * Parse given line to choose between {@link #addAlias(String, Certificate)}
+     * or {@link #deleteAlias(String)}.
+     */
+    protected void parseLine(final String line)
+            throws GeneralSecurityException, IOException, Exceptions.UnknownInput {
+    	assert this.ks != null;
+    	
         String path = line.substring(1);
         String filename = path.substring(path.lastIndexOf("/") + 1);
         String alias = "debian:" + filename;
         if(line.startsWith("+")) {
-            Certificate cert = createCertificate(path);
+            Certificate cert = loadCertificate(path);
             if (cert == null) {
                 return;
             }
-            if(keystore.containsAlias(alias)) {
-                System.out.println("Replacing " + alias);
-                keystore.deleteEntry(alias);
-            }
-            else {
-                System.out.println("Adding " + alias);
-            }
-            keystore.setCertificateEntry(alias, cert);
+            addAlias(alias, cert);
         }
         else if (line.startsWith("-")) {
             deleteAlias(alias);
@@ -118,15 +144,58 @@ public class UpdateCertificates {
             deleteAlias(filename);
         }
         else {
-            System.err.println("Unknown input: " + line);
+        	throw new Exceptions.UnknownInput(line);
         }        
     }
+    
+    /**
+     * Delete cert in keystore at given alias.
+     */
+    private void deleteAlias(final String alias) throws GeneralSecurityException {
+    	assert this.ks != null;
+    	
+        if (contains(alias)) {
+            System.out.println("Removing " + alias);
+            this.ks.deleteEntry(alias);
+        }
+    }
 
-    private static Certificate createCertificate(String path) {
+    /**
+     * Add or replace existing cert in keystore with given alias.
+     */
+	private void addAlias(final String alias, final Certificate cert)
+			throws KeyStoreException {
+		assert this.ks != null;
+		
+		if(contains(alias)) {
+		    System.out.println("Replacing " + alias);
+		    this.ks.deleteEntry(alias);
+		}
+		else {
+		    System.out.println("Adding " + alias);
+		}
+		this.ks.setCertificateEntry(alias, cert);
+	}
+
+	/**
+	 * Returns true when alias exist in keystore.
+	 */
+	protected boolean contains(String alias) throws KeyStoreException {
+		assert this.ks != null;
+		
+		return this.ks.containsAlias(alias);
+	}
+
+	/**
+	 * Try to load a certificate instance from given path.
+	 */
+    private Certificate loadCertificate(final String path) {
+    	assert this.certFactory != null;
+    	
         Certificate cert = null;
         try {
             FileInputStream certFile = new FileInputStream(path);
-            cert = certFactory.generateCertificate(certFile);
+            cert = this.certFactory.generateCertificate(certFile);
             certFile.close();
         }
         catch (Exception e) {
@@ -136,16 +205,19 @@ public class UpdateCertificates {
         return cert;
     }
     
-    private static void writeKeyStore() throws GeneralSecurityException {
+    /**
+     * Write actual keystore content to disk.
+     */
+    protected void writeKeyStore() throws GeneralSecurityException, Exceptions.UnableToSaveKeystore {
+    	assert this.ks != null;
+    	
         try {
-            FileOutputStream certOutputFile = new FileOutputStream("/etc/ssl/certs/java/cacerts");
-            keystore.store(certOutputFile, password);
+            FileOutputStream certOutputFile = new FileOutputStream(this.ksFilename);
+            this.ks.store(certOutputFile, this.password);
             certOutputFile.close();
         }
         catch (IOException e) {
-            System.err.println("There was a problem saving the new Java keystore. Message:\n  " +
-                e.getMessage());
-            System.exit(1);
+        	throw new Exceptions.UnableToSaveKeystore("There was a problem saving the new Java keystore.", e);
         }
     }
 }

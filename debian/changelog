@@ -1,3 +1,18 @@
+ca-certificates-java (20120603) unstable; urgency=low
+
+  * Use javahelper as buildsystem:
+    - d/control: Add Build-Depends on javahelper.
+    - d/rules: Use jh_build to call javac.
+  * Create a testsuite for this package:
+    - Refactor UpdateCertificates code to send exceptions instead of
+      System.exit(1).
+    - New testsuite: UpdateCertificatesTest.
+    - d/control: Build-Depends on junit4.
+    - d/rules: Launch junit after build and handle "nocheck" option in
+      DEB_BUILD_OPTIONS.
+
+ -- Damien Raude-Morvan <drazzib@debian.org>  Sun, 03 Jun 2012 12:10:26 +0200
+
 ca-certificates-java (20120524) unstable; urgency=low
 
   [ Marc Deslauriers ]

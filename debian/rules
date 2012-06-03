@@ -13,6 +13,12 @@ else
 endif
 
 JAVA_HOME := /usr/lib/jvm/default-java
+export JAVA_HOME
+OPTS := --no-javadoc --main=UpdateCertificates --javacopts="-source 1.6 -target 1.6"
+CLASSPATH := /usr/share/java/junit4.jar
+export CLASSPATH
+
+do_junit = $(if $(findstring nocheck,$(DEB_BUILD_OPTIONS)),,yes)
 
 d = debian/ca-certificates-java
 
@@ -21,13 +27,19 @@ build-indep: build
 build: build-stamp
 build-stamp:
 	dh_testdir
-	$(JAVA_HOME)/bin/javac -source 1.6 -target 1.6 UpdateCertificates.java
+	jh_build $(OPTS) ca-certificates-java.jar .
+ifeq ($(do_junit),yes)
+	$(JAVA_HOME)/bin/java -cp /usr/share/java/junit4.jar:./ca-certificates-java.jar \
+	org.junit.runner.JUnitCore \
+	UpdateCertificatesTest
+endif
 	touch $@
 
 clean:
 	dh_testdir
 	dh_testroot
-	$(RM) build-stamp UpdateCertificates.class
+	jh_build --clean
+	$(RM) build-stamp
 	dh_clean
 	for f in debian/*.in; do \
 	  f2=$$(echo $$f | sed ';s/\.in$$//'); \
@@ -37,7 +49,7 @@ clean:
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k 
+	dh_prep
 	dh_installdirs \
 		usr/share/ca-certificates-java \
 		etc/default \
@@ -52,7 +64,7 @@ install: build
 		$(d)/etc/ca-certificates/update.d/jks-keystore
 	install -m600 debian/default \
 		$(d)/etc/default/cacerts
-	dh_install UpdateCertificates.class /usr/share/ca-certificates-java/
+	dh_install ca-certificates-java.jar /usr/share/ca-certificates-java/
 
 # Build architecture-independent files here.
 binary-indep: build install
