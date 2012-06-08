@@ -1,10 +1,15 @@
-ca-certificates-java (20120608) UNRELEASED; urgency=low
+ca-certificates-java (20120608) unstable; urgency=low
 
+  [ James Page ]
   * Switch primary JRE dependency from openjdk-6 to openjdk-7 to support
     demotion of openjdk-6 to universe in Ubuntu:
     - d/control, rules: Generate primary JRE dependency at build time to
       allow differentiation between Ubuntu and Debian.
   * Added myself to uploaders.
+
+  [ Damien Raude-Morvan ]
+  * Update to unstable.
+  * Set DMUA flag for James Page.
 
  -- James Page <james.page@ubuntu.com>  Fri, 08 Jun 2012 09:44:58 +0100
 

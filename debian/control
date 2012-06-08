@@ -8,6 +8,7 @@ Uploaders: Matthias Klose <doko@ubuntu.com>,
            James Page <james.page@ubuntu.com>
 Build-Depends: debhelper (>= 6), default-jdk, javahelper, junit4
 Standards-Version: 3.9.3
+DM-Upload-Allowed: yes
 Vcs-Svn: svn://svn.debian.org/svn/pkg-java/trunk/ca-certificates-java
 Vcs-Browser: http://svn.debian.org/wsvn/pkg-java/trunk/ca-certificates-java/
 
