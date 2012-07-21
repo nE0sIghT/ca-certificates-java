@@ -15,6 +15,15 @@ fi
 arch=`dpkg --print-architecture`
 JAR=/usr/share/ca-certificates-java/ca-certificates-java.jar
 
+nsslib_name()
+{
+    if dpkg --assert-multi-arch 2>/dev/null; then
+        echo "@NSS_LIB@:${arch}"
+    else
+        echo "@NSS_LIB@"
+    fi
+}
+
 setup_path()
 {
     for jvm in java-6-openjdk-$arch java-6-openjdk \
@@ -30,7 +39,7 @@ setup_path()
 first_install()
 {
     if which dpkg-query --version >/dev/null; then
-    nsspkg=$(dpkg-query -L @NSS_LIB@ | sed -n 's,\(.*\)/libnss3\.so$,\1,p')
+    nsspkg=$(dpkg-query -L "$(nsslib_name)" | sed -n 's,\(.*\)/libnss3\.so$,\1,p')
     nssjdk=$(sed -n '/nssLibraryDirectory/s/.*= *\(.*\)/\1/p' /etc/${jvm%-$arch}/security/nss.cfg)
     if [ -n "$nsspkg" ] && [ -n "$nssjdk" ] && [ "$nsspkg" != "$nssjdk" ]; then
         ln -sf $nsspkg/libnss3.so $nssjdk/libnss3.so

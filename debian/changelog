@@ -1,3 +1,12 @@
+ca-certificates-java (20120721) unstable; urgency=low
+
+  * Fix jks-keystore and postinst to work on multi-arch system.
+    Use dpkg-query -L package:arch. (Closes: #680618).
+  * As libnss3-1d is a transitional package on both Debian and Ubuntu,
+    upgrade Depends to use libnss3.
+
+ -- Damien Raude-Morvan <drazzib@debian.org>  Sat, 21 Jul 2012 01:06:32 +0200
+
 ca-certificates-java (20120608) unstable; urgency=low
 
   [ James Page ]

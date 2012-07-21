@@ -5,13 +5,13 @@
 #export DH_VERBOSE=1
 
 ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
-	SUBSTVARS = -Vnss:Depends="libnss3-1d (>= 3.12.9+ckbi-1.82-0ubuntu3~)" \
+	SUBSTVARS = -Vnss:Depends="libnss3 (>= 3.12.9+ckbi-1.82-0ubuntu3~)" \
 				-Vjre:Depends="openjdk-7-jre-headless (>= 7~u3-2.1.1~pre1-1)"
 	nss_lib = libnss3
 else
-	SUBSTVARS = -Vnss:Depends="libnss3-1d (>= 3.12.10-2~)" \
+	SUBSTVARS = -Vnss:Depends="libnss3 (>= 3.12.10-2~)" \
 				-Vjre:Depends="openjdk-6-jre-headless (>= 6b16-1.6.1-2)"
-	nss_lib = libnss3-1d
+	nss_lib = libnss3
 endif
 
 JAVA_HOME := /usr/lib/jvm/default-java
