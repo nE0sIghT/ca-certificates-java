@@ -1,3 +1,38 @@
+ca-certificates-java (20130815) unstable; urgency=low
+
+  * Acknowledge NMU done by Don Armstrong and Andreas Beckmann.
+  * Fix tests to works with new cacert certificates names (Closes:
+    #713138).
+  * d/control: Use canonical value for Vcs-* fields.
+  * d/control: Remove deprecated DMUA flag.
+  * d/control: Bump Standards-Version to 3.9.4 (no changes needed).
+
+ -- Damien Raude-Morvan <drazzib@debian.org>  Thu, 15 Aug 2013 13:52:46 +0200
+
+ca-certificates-java (20121112+nmu2) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * postinst, jks-keystore.hook: Do not fail if nss.cfg does not (yet) exist,
+    i.e. if openjdk-?-jre-headless is unpacked but not yet configured.
+    (Closes: #694888)
+  * Set urgency to medium for RC bugfix.
+
+ -- Andreas Beckmann <anbe@debian.org>  Sun, 27 Jan 2013 14:19:41 +0100
+
+ca-certificates-java (20121112+nmu1) unstable; urgency=low
+
+  * Non-maintainer upload
+  * Fix test for dpkg-query in postinst; there was an extraneous --version
+    here. [Probably don't even need to bother to check for dpkg-query, but
+    why not.] (Closes: #690204)
+  * Library path for softokn3pkg and nsspkg is potentially wrong if there
+    are multiple different paths; fix it.
+  * Do not run the hook if ca-certificates-java has been removed but not
+    purged.
+  * Use the new trigger support provided by ca-certificates (>=20121114).
+
+ -- Don Armstrong <don@debian.org>  Mon, 12 Nov 2012 15:45:50 -0800
+
 ca-certificates-java (20120721) unstable; urgency=low
 
   * Fix jks-keystore and postinst to work on multi-arch system.

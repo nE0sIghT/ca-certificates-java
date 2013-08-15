@@ -38,9 +38,10 @@ setup_path()
 
 first_install()
 {
-    if which dpkg-query --version >/dev/null; then
-    nsspkg=$(dpkg-query -L "$(nsslib_name)" | sed -n 's,\(.*\)/libnss3\.so$,\1,p')
-    nssjdk=$(sed -n '/nssLibraryDirectory/s/.*= *\(.*\)/\1/p' /etc/${jvm%-$arch}/security/nss.cfg)
+    if which dpkg-query >/dev/null; then
+    nsspkg=$(dpkg-query -L "$(nsslib_name)" | sed -n 's,\(.*\)/libnss3\.so$,\1,p'|head -n 1)
+    nsscfg=/etc/${jvm%-$arch}/security/nss.cfg
+    nssjdk=$(test ! -f $nsscfg || sed -n '/nssLibraryDirectory/s/.*= *\(.*\)/\1/p' $nsscfg)
     if [ -n "$nsspkg" ] && [ -n "$nssjdk" ] && [ "$nsspkg" != "$nssjdk" ]; then
         ln -sf $nsspkg/libnss3.so $nssjdk/libnss3.so
     fi
