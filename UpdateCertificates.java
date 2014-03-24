@@ -33,7 +33,7 @@ import java.security.cert.CertificateFactory;
 
 /**
  * This code is a re-implementation of the idea from Ludwig Nussel found in
- * http://gitorious.org/opensuse/ca-certificates/blobs/master/keystore.java
+ * https://github.com/openSUSE/ca-certificates/blob/41917f5a/keystore.java
  * for the Debian operating system. It updates the global JVM keystore.
  *
  * @author Torsten Werner
