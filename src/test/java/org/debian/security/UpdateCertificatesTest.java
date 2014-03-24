@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- *
  */
 
 package org.debian.security;
@@ -38,71 +37,14 @@ public class UpdateCertificatesTest {
     private static final String REMOVE_CACERT  = "-/usr/share/ca-certificates/spi-inc.org/spi-cacert-2008.crt";
     private static final String ADD_CACERT     = "+/usr/share/ca-certificates/spi-inc.org/spi-cacert-2008.crt";
 
-    private String ksFilename;
-    private String ksPassword;
+    private String ksFilename = "./target/test-classes/tests-cacerts";
+    private String ksPassword = "changeit";
 
     @Before
     public void start() {
-        ksFilename = "./target/test-classes/tests-cacerts";
-        ksPassword = "changeit";
         // Delete any previous file
         File keystore = new File(ksFilename);
         keystore.delete();
-    }
-
-    /**
-     * Test a simple open then write without any modification.
-     */
-    @Test
-    public void testNoop() throws Exception {
-        UpdateCertificates uc = new UpdateCertificates(ksPassword, ksFilename);
-        uc.writeKeyStore();
-    }
-
-    /**
-     * Test a to open a keystore and write without any modification
-     * and then try to open it again with wrong password : will throw a
-     * InvalidKeystorePassword
-     */
-    @Test
-    public void testWriteThenOpenWrongPwd() throws Exception {
-        try {
-            UpdateCertificates uc = new UpdateCertificates(ksPassword, ksFilename);
-            uc.writeKeyStore();
-        } catch (InvalidKeystorePasswordException e) {
-            fail();
-        }
-
-        try {
-            UpdateCertificates uc = new UpdateCertificates("wrongpassword", ksFilename);
-            fail();
-            uc.writeKeyStore();
-        } catch (InvalidKeystorePasswordException e) {
-            assertEquals("Cannot open Java keystore. Is the password correct?", e.getMessage());
-        }
-    }
-
-    /**
-     * Test a to open a keystore then remove its backing File (and replace it
-     * with a directory with the same name) and try to write in to disk :
-     * will throw an UnableToSaveKeystore
-     */
-    @Test
-    public void testDeleteThenWrite() throws Exception {
-        try {
-            UpdateCertificates uc = new UpdateCertificates(ksPassword, ksFilename);
-
-            // Replace actual file by a directory !
-            File keystore = new File(ksFilename);
-            keystore.delete();
-            keystore.mkdir();
-
-            // Will fail with some IOException
-            uc.writeKeyStore();
-            fail();
-        } catch (UnableToSaveKeystoreException e) {
-            assertEquals("There was a problem saving the new Java keystore.", e.getMessage());
-        }
     }
 
     /**
@@ -110,7 +52,7 @@ public class UpdateCertificatesTest {
      */
     @Test
     public void testWrongCommand() throws Exception {
-        UpdateCertificates uc = new UpdateCertificates(ksPassword, ksFilename);
+        UpdateCertificates uc = new UpdateCertificates(ksFilename, ksPassword);
         try {
             uc.parseLine(INVALID_CACERT);
             fail();
@@ -124,11 +66,12 @@ public class UpdateCertificatesTest {
      */
     @Test
     public void testAdd() throws Exception {
-        UpdateCertificates uc = new UpdateCertificates(ksPassword, ksFilename);
+        UpdateCertificates uc = new UpdateCertificates(ksFilename, ksPassword);
         uc.parseLine(ADD_CACERT);
-        uc.writeKeyStore();
+        uc.finish();
 
-        assertEquals(true, uc.contains(ALIAS_CACERT));
+        KeyStoreHandler keystore = new KeyStoreHandler(ksFilename, ksPassword.toCharArray());
+        assertEquals(true, keystore.contains(ALIAS_CACERT));
     }
 
     /**
@@ -137,11 +80,12 @@ public class UpdateCertificatesTest {
      */
     @Test
     public void testAddInvalidCert() throws Exception {
-        UpdateCertificates uc = new UpdateCertificates(ksPassword, ksFilename);
+        UpdateCertificates uc = new UpdateCertificates(ksFilename, ksPassword);
         uc.parseLine("+/usr/share/ca-certificates/null.crt");
-        uc.writeKeyStore();
+        uc.finish();
 
-        assertEquals(false, uc.contains("debian:null.crt"));
+        KeyStoreHandler keystore = new KeyStoreHandler(ksFilename, ksPassword.toCharArray());
+        assertEquals(false, keystore.contains("debian:null.crt"));
     }
 
     /**
@@ -150,12 +94,13 @@ public class UpdateCertificatesTest {
      */
     @Test
     public void testReplace() throws Exception {
-        UpdateCertificates uc = new UpdateCertificates(ksPassword, ksFilename);
+        UpdateCertificates uc = new UpdateCertificates(ksFilename, ksPassword);
         uc.parseLine(ADD_CACERT);
         uc.parseLine(ADD_CACERT);
-        uc.writeKeyStore();
+        uc.finish();
 
-        assertEquals(true, uc.contains(ALIAS_CACERT));
+        KeyStoreHandler keystore = new KeyStoreHandler(ksFilename, ksPassword.toCharArray());
+        assertEquals(true, keystore.contains(ALIAS_CACERT));
     }
 
     /**
@@ -163,12 +108,13 @@ public class UpdateCertificatesTest {
      */
     @Test
     public void testRemove() throws Exception {
-        UpdateCertificates uc = new UpdateCertificates(ksPassword, ksFilename);
+        UpdateCertificates uc = new UpdateCertificates(ksFilename, ksPassword);
         uc.parseLine(REMOVE_CACERT);
-        uc.writeKeyStore();
+        uc.finish();
 
         // We start with empty KS, so it shouldn't do anything
-        assertEquals(false, uc.contains(ALIAS_CACERT));
+        KeyStoreHandler keystore = new KeyStoreHandler(ksFilename, ksPassword.toCharArray());
+        assertEquals(false, keystore.contains(ALIAS_CACERT));
     }
 
     /**
@@ -176,17 +122,18 @@ public class UpdateCertificatesTest {
      */
     @Test
     public void testAddThenRemove() throws Exception {
-        UpdateCertificates ucAdd = new UpdateCertificates(ksPassword, ksFilename);
+        UpdateCertificates ucAdd = new UpdateCertificates(ksFilename, ksPassword);
         ucAdd.parseLine(ADD_CACERT);
-        ucAdd.writeKeyStore();
+        ucAdd.finish();
 
-        assertEquals(true, ucAdd.contains(ALIAS_CACERT));
+        KeyStoreHandler keystore = new KeyStoreHandler(ksFilename, ksPassword.toCharArray());
+        assertEquals(true, keystore.contains(ALIAS_CACERT));
 
-        UpdateCertificates ucRemove = new UpdateCertificates(ksPassword, ksFilename);
+        UpdateCertificates ucRemove = new UpdateCertificates(ksFilename, ksPassword);
         ucRemove.parseLine(REMOVE_CACERT);
-        ucRemove.writeKeyStore();
+        ucRemove.finish();
 
-        assertEquals(false, ucRemove.contains(ALIAS_CACERT));
+        keystore.load();
+        assertEquals(false, keystore.contains(ALIAS_CACERT));
     }
-
 }
