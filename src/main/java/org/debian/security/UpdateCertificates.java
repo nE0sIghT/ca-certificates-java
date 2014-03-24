@@ -56,7 +56,7 @@ public class UpdateCertificates {
         if (args.length == 2 && args[0].equals("-storepass")) {
             passwordString = args[1];
         } else if (args.length > 0) {
-            System.err.println("Usage: java UpdateCertificates [-storepass <password>]");
+            System.err.println("Usage: java org.debian.security.UpdateCertificates [-storepass <password>]");
             System.exit(1);
         }
 
@@ -65,16 +65,16 @@ public class UpdateCertificates {
             // Force reading of inputstream in UTF-8
             uc.processChanges(new InputStreamReader(System.in, "UTF8"));
             uc.writeKeyStore();
-        } catch (Exceptions.InvalidKeystorePassword e) {
+        } catch (InvalidKeystorePasswordException e) {
             e.printStackTrace(System.err);
             System.exit(1);
-        } catch (Exceptions.UnableToSaveKeystore e) {
+        } catch (UnableToSaveKeystoreException e) {
             e.printStackTrace(System.err);
             System.exit(1);
         }
     }
 
-    public UpdateCertificates(final String passwordString, final String keystoreFile) throws IOException, GeneralSecurityException, Exceptions.InvalidKeystorePassword {
+    public UpdateCertificates(final String passwordString, final String keystoreFile) throws IOException, GeneralSecurityException, InvalidKeystorePasswordException {
         this.password = passwordString.toCharArray();
         this.ksFilename = keystoreFile;
         this.ks = openKeyStore();
@@ -84,7 +84,7 @@ public class UpdateCertificates {
     /**
      * Try to open a existing keystore or create an new one.
      */
-    private KeyStore openKeyStore() throws GeneralSecurityException, IOException, Exceptions.InvalidKeystorePassword {
+    private KeyStore openKeyStore() throws GeneralSecurityException, IOException, InvalidKeystorePasswordException {
         KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
         File certInputFile = new File(this.ksFilename);
         FileInputStream certInputStream = null;
@@ -94,7 +94,7 @@ public class UpdateCertificates {
         try {
             ks.load(certInputStream, this.password);
         } catch (IOException e) {
-            throw new Exceptions.InvalidKeystorePassword("Cannot open Java keystore. Is the password correct?", e);
+            throw new InvalidKeystorePasswordException("Cannot open Java keystore. Is the password correct?", e);
         }
         if (certInputStream != null) {
             certInputStream.close();
@@ -111,7 +111,7 @@ public class UpdateCertificates {
         while ((line = bufferedStdinReader.readLine()) != null) {
             try {
                 parseLine(line);
-            } catch (Exceptions.UnknownInput e) {
+            } catch (UnknownInputException e) {
                 System.err.println("Unknown input: " + line);
                 // Keep processing for others lines
             }
@@ -122,7 +122,7 @@ public class UpdateCertificates {
      * Parse given line to choose between {@link #addAlias(String, Certificate)}
      * or {@link #deleteAlias(String)}.
      */
-    protected void parseLine(final String line) throws GeneralSecurityException, IOException, Exceptions.UnknownInput {
+    protected void parseLine(final String line) throws GeneralSecurityException, IOException, UnknownInputException {
         assert this.ks != null;
 
         String path = line.substring(1);
@@ -140,7 +140,7 @@ public class UpdateCertificates {
             // removed after the release of Wheezy.
             deleteAlias(filename);
         } else {
-            throw new Exceptions.UnknownInput(line);
+            throw new UnknownInputException(line);
         }
     }
 
@@ -201,7 +201,7 @@ public class UpdateCertificates {
     /**
      * Write actual keystore content to disk.
      */
-    protected void writeKeyStore() throws GeneralSecurityException, Exceptions.UnableToSaveKeystore {
+    protected void writeKeyStore() throws GeneralSecurityException, UnableToSaveKeystoreException {
         assert this.ks != null;
 
         try {
@@ -209,7 +209,7 @@ public class UpdateCertificates {
             this.ks.store(certOutputFile, this.password);
             certOutputFile.close();
         } catch (IOException e) {
-            throw new Exceptions.UnableToSaveKeystore("There was a problem saving the new Java keystore.", e);
+            throw new UnableToSaveKeystoreException("There was a problem saving the new Java keystore.", e);
         }
     }
 }

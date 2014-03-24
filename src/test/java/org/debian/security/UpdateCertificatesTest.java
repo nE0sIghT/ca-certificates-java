@@ -57,7 +57,7 @@ public class UpdateCertificatesTest {
      */
     @Test
     public void testNoop() throws IOException, GeneralSecurityException,
-            Exceptions.InvalidKeystorePassword, Exceptions.UnableToSaveKeystore {
+            InvalidKeystorePasswordException, UnableToSaveKeystoreException {
         UpdateCertificates uc = new UpdateCertificates(this.ksPassword,
                 this.ksFilename);
         uc.writeKeyStore();
@@ -70,12 +70,12 @@ public class UpdateCertificatesTest {
      */
     @Test
     public void testWriteThenOpenWrongPwd() throws IOException,
-            GeneralSecurityException, Exceptions.UnableToSaveKeystore {
+            GeneralSecurityException, UnableToSaveKeystoreException {
         try {
             UpdateCertificates uc = new UpdateCertificates(this.ksPassword,
                     this.ksFilename);
             uc.writeKeyStore();
-        } catch (Exceptions.InvalidKeystorePassword e) {
+        } catch (InvalidKeystorePasswordException e) {
             Assert.fail();
         }
 
@@ -84,7 +84,7 @@ public class UpdateCertificatesTest {
                     this.ksFilename);
             Assert.fail();
             uc.writeKeyStore();
-        } catch (Exceptions.InvalidKeystorePassword e) {
+        } catch (InvalidKeystorePasswordException e) {
             Assert.assertEquals(
                     "Cannot open Java keystore. Is the password correct?",
                     e.getMessage());
@@ -97,8 +97,7 @@ public class UpdateCertificatesTest {
      * will throw an UnableToSaveKeystore
      */
     @Test
-    public void testDeleteThenWrite() throws IOException,
-            GeneralSecurityException, Exceptions.InvalidKeystorePassword {
+    public void testDeleteThenWrite() throws IOException, GeneralSecurityException, InvalidKeystorePasswordException {
         try {
             UpdateCertificates uc = new UpdateCertificates(this.ksPassword,
                     this.ksFilename);
@@ -111,7 +110,7 @@ public class UpdateCertificatesTest {
             // Will fail with some IOException
             uc.writeKeyStore();
             Assert.fail();
-        } catch (Exceptions.UnableToSaveKeystore e) {
+        } catch (UnableToSaveKeystoreException e) {
             Assert.assertEquals(
                     "There was a problem saving the new Java keystore.",
                     e.getMessage());
@@ -122,14 +121,13 @@ public class UpdateCertificatesTest {
      * Try to send an invalid command ("x") in parseLine : throw UnknownInput
      */
     @Test
-    public void testWrongCommand() throws IOException,
-            GeneralSecurityException, Exceptions.InvalidKeystorePassword {
+    public void testWrongCommand() throws IOException, GeneralSecurityException, InvalidKeystorePasswordException {
         UpdateCertificates uc = new UpdateCertificates(this.ksPassword,
                 this.ksFilename);
         try {
             uc.parseLine(INVALID_CACERT);
             Assert.fail();
-        } catch (Exceptions.UnknownInput e) {
+        } catch (UnknownInputException e) {
             Assert.assertEquals(INVALID_CACERT, e.getMessage());
         }
     }
@@ -139,8 +137,8 @@ public class UpdateCertificatesTest {
      */
     @Test
     public void testAdd() throws IOException, GeneralSecurityException,
-            Exceptions.UnknownInput, Exceptions.InvalidKeystorePassword,
-            Exceptions.UnableToSaveKeystore {
+            UnknownInputException, InvalidKeystorePasswordException,
+            UnableToSaveKeystoreException {
         UpdateCertificates uc = new UpdateCertificates(this.ksPassword,
                 this.ksFilename);
         uc.parseLine(ADD_CACERT);
@@ -155,8 +153,8 @@ public class UpdateCertificatesTest {
      */
     @Test
     public void testAddInvalidCert() throws IOException,
-            GeneralSecurityException, Exceptions.UnknownInput,
-            Exceptions.InvalidKeystorePassword, Exceptions.UnableToSaveKeystore {
+            GeneralSecurityException, UnknownInputException,
+            InvalidKeystorePasswordException, UnableToSaveKeystoreException {
         UpdateCertificates uc = new UpdateCertificates(this.ksPassword,
                 this.ksFilename);
         uc.parseLine("+/usr/share/ca-certificates/null.crt");
@@ -171,8 +169,8 @@ public class UpdateCertificatesTest {
      */
     @Test
     public void testReplace() throws IOException, GeneralSecurityException,
-            Exceptions.UnknownInput, Exceptions.InvalidKeystorePassword,
-            Exceptions.UnableToSaveKeystore {
+            UnknownInputException, InvalidKeystorePasswordException,
+            UnableToSaveKeystoreException {
         UpdateCertificates uc = new UpdateCertificates(this.ksPassword,
                 this.ksFilename);
         uc.parseLine(ADD_CACERT);
@@ -187,8 +185,8 @@ public class UpdateCertificatesTest {
      */
     @Test
     public void testRemove() throws IOException, GeneralSecurityException,
-            Exceptions.UnknownInput, Exceptions.InvalidKeystorePassword,
-            Exceptions.UnableToSaveKeystore {
+            UnknownInputException, InvalidKeystorePasswordException,
+            UnableToSaveKeystoreException {
         UpdateCertificates uc = new UpdateCertificates(this.ksPassword,
                 this.ksFilename);
         uc.parseLine(REMOVE_CACERT);
@@ -203,8 +201,8 @@ public class UpdateCertificatesTest {
      */
     @Test
     public void testAddThenRemove() throws IOException,
-            GeneralSecurityException, Exceptions.UnknownInput,
-            Exceptions.InvalidKeystorePassword, Exceptions.UnableToSaveKeystore {
+            GeneralSecurityException, UnknownInputException,
+            InvalidKeystorePasswordException, UnableToSaveKeystoreException {
         UpdateCertificates ucAdd = new UpdateCertificates(this.ksPassword,
                 this.ksFilename);
         ucAdd.parseLine(ADD_CACERT);
