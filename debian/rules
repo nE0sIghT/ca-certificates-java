@@ -16,7 +16,7 @@ endif
 
 JAVA_HOME := /usr/lib/jvm/default-java
 export JAVA_HOME
-OPTS := --no-javadoc --main=UpdateCertificates --javacopts="-source 1.6 -target 1.6"
+OPTS := --no-javadoc --main=org.debian.security.UpdateCertificates --javacopts="-source 1.6 -target 1.6"
 CLASSPATH := /usr/share/java/junit4.jar
 export CLASSPATH
 
@@ -33,7 +33,7 @@ build-stamp:
 ifeq ($(do_junit),yes)
 	$(JAVA_HOME)/bin/java -cp /usr/share/java/junit4.jar:./ca-certificates-java.jar \
 	org.junit.runner.JUnitCore \
-	UpdateCertificatesTest
+	org.debian.security.UpdateCertificatesTest
 endif
 	touch $@
 

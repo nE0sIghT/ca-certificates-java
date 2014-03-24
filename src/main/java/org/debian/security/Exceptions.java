@@ -17,6 +17,8 @@
  *
  */
 
+package org.debian.security;
+
 /**
  * Custom exceptions used by {@link UpdateCertificates}
  * 
