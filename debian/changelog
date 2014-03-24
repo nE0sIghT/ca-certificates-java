@@ -4,7 +4,7 @@ ca-certificates-java (20140324) unstable; urgency=medium
   * Fixed a test failure caused by the removal of the CAcert.org root
     certificate from the ca-certificates package (Closes: #741755)
   * Limit the memory used by java to 64M when updating the certificates
-    (Closes: 576453)
+    (Closes: #576453)
   * Mavenized the project
   * Code refactoring
   * d/control: Standards-Version updated to 3.9.5 (no changes)
