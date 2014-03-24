@@ -19,6 +19,7 @@
 package org.debian.security;
 
 import java.io.File;
+import java.io.StringReader;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -134,6 +135,16 @@ public class UpdateCertificatesTest {
         ucRemove.finish();
 
         keystore.load();
+        assertEquals(false, keystore.contains(ALIAS_CACERT));
+    }
+    
+    @Test
+    public void testProcessChanges() throws Exception {
+        UpdateCertificates uc = new UpdateCertificates(ksFilename, ksPassword);
+        uc.processChanges(new StringReader(ADD_CACERT + "\n" + INVALID_CACERT + "\n" + REMOVE_CACERT + "\n"));
+        uc.finish();
+        
+        KeyStoreHandler keystore = new KeyStoreHandler(ksFilename, ksPassword.toCharArray());
         assertEquals(false, keystore.contains(ALIAS_CACERT));
     }
 }
