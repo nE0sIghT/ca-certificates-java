@@ -28,7 +28,7 @@ import org.junit.Test;
 
 /**
  * Tests for {@link UpdateCertificates}.
- * 
+ *
  * @author Damien Raude-Morvan
  */
 public class UpdateCertificatesTest {

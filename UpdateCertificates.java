@@ -35,20 +35,20 @@ import java.security.cert.CertificateFactory;
  * This code is a re-implementation of the idea from Ludwig Nussel found in
  * http://gitorious.org/opensuse/ca-certificates/blobs/master/keystore.java
  * for the Debian operating system. It updates the global JVM keystore.
- * 
+ *
  * @author Torsten Werner
  * @author Damien Raude-Morvan
  */
 public class UpdateCertificates {
-	
+
     private char[] password = null;
-    
+
     private String ksFilename = null;
-    
+
     private KeyStore ks = null;
-    
+
     private CertificateFactory certFactory = null;
-    
+
     public static void main(String[] args) throws IOException, GeneralSecurityException {
         String passwordString = "changeit";
         if (args.length == 2 && args[0].equals("-storepass")) {
@@ -72,7 +72,7 @@ public class UpdateCertificates {
 			System.exit(1);
 		}
     }
-    
+
     public UpdateCertificates(final String passwordString, final String keystoreFile) throws IOException, GeneralSecurityException, Exceptions.InvalidKeystorePassword {
         this.password = passwordString.toCharArray();
         this.ksFilename = keystoreFile;
@@ -101,7 +101,7 @@ public class UpdateCertificates {
         }
         return ks;
     }
-    
+
     /**
      * Until reader EOF, try to read changes and send each to {@link #parseLine(String)}.
      */
@@ -118,7 +118,7 @@ public class UpdateCertificates {
         	}
         }
     }
-    
+
     /**
      * Parse given line to choose between {@link #addAlias(String, Certificate)}
      * or {@link #deleteAlias(String)}.
@@ -126,7 +126,7 @@ public class UpdateCertificates {
     protected void parseLine(final String line)
             throws GeneralSecurityException, IOException, Exceptions.UnknownInput {
     	assert this.ks != null;
-    	
+
         String path = line.substring(1);
         String filename = path.substring(path.lastIndexOf("/") + 1);
         String alias = "debian:" + filename;
@@ -145,15 +145,15 @@ public class UpdateCertificates {
         }
         else {
         	throw new Exceptions.UnknownInput(line);
-        }        
+        }
     }
-    
+
     /**
      * Delete cert in keystore at given alias.
      */
     private void deleteAlias(final String alias) throws GeneralSecurityException {
     	assert this.ks != null;
-    	
+
         if (contains(alias)) {
             System.out.println("Removing " + alias);
             this.ks.deleteEntry(alias);
@@ -166,7 +166,7 @@ public class UpdateCertificates {
 	private void addAlias(final String alias, final Certificate cert)
 			throws KeyStoreException {
 		assert this.ks != null;
-		
+
 		if(contains(alias)) {
 		    System.out.println("Replacing " + alias);
 		    this.ks.deleteEntry(alias);
@@ -182,7 +182,7 @@ public class UpdateCertificates {
 	 */
 	protected boolean contains(String alias) throws KeyStoreException {
 		assert this.ks != null;
-		
+
 		return this.ks.containsAlias(alias);
 	}
 
@@ -191,7 +191,7 @@ public class UpdateCertificates {
 	 */
     private Certificate loadCertificate(final String path) {
     	assert this.certFactory != null;
-    	
+
         Certificate cert = null;
         try {
             FileInputStream certFile = new FileInputStream(path);
@@ -204,13 +204,13 @@ public class UpdateCertificates {
         }
         return cert;
     }
-    
+
     /**
      * Write actual keystore content to disk.
      */
     protected void writeKeyStore() throws GeneralSecurityException, Exceptions.UnableToSaveKeystore {
     	assert this.ks != null;
-    	
+
         try {
             FileOutputStream certOutputFile = new FileOutputStream(this.ksFilename);
             this.ks.store(certOutputFile, this.password);
