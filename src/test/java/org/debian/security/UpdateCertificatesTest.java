@@ -43,7 +43,7 @@ public class UpdateCertificatesTest {
 
     @Before
     public void start() {
-        ksFilename = "./tests-cacerts";
+        ksFilename = "./target/test-classes/tests-cacerts";
         ksPassword = "changeit";
         // Delete any previous file
         File keystore = new File(ksFilename);
