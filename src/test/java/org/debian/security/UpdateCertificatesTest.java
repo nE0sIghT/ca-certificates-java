@@ -91,6 +91,19 @@ public class UpdateCertificatesTest {
     }
 
     /**
+     * Test to insert a certificate with a comment (Bug #539283)
+     */
+    @Test
+    public void testAddCertWithComment() throws Exception {
+        UpdateCertificates uc = new UpdateCertificates(ksFilename, ksPassword);
+        uc.parseLine("+target/test-classes/spi-cacert-2008-with-comment.crt");
+        uc.finish();
+
+        KeyStoreHandler keystore = new KeyStoreHandler(ksFilename, ksPassword.toCharArray());
+        assertEquals(true, keystore.contains("debian:spi-cacert-2008-with-comment.crt"));
+    }
+
+    /**
      * Try to add same certificate multiple time : we replace it and
      * there is only one alias.
      */
