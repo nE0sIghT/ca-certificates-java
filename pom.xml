@@ -4,7 +4,7 @@
 
   <groupId>org.debian</groupId>
   <artifactId>ca-certificates-java</artifactId>
-  <version>20130815</version>
+  <version>20140324</version>
   <packaging>jar</packaging>
   <name>ca-certificates-java</name>
   <description>Common CA certificates</description>
