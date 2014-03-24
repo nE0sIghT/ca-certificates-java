@@ -50,7 +50,7 @@ first_install()
     # Forcibly remove diginotar cert (LP: #920758)
     if [ -n "$FIXOLD" ]; then
         echo -e "-diginotar_root_ca\n-diginotar_root_ca_pem" | \
-        java -jar $JAR -storepass "$storepass"
+        java -Xmx64m -jar $JAR -storepass "$storepass"
     fi
 
     find /etc/ssl/certs -name \*.pem | \
@@ -63,7 +63,7 @@ first_install()
         fi
         echo "+${filename}"
     done | \
-    java -jar $JAR -storepass "$storepass"
+    java -Xmx64m -jar $JAR -storepass "$storepass"
     echo "done."
 }
 
