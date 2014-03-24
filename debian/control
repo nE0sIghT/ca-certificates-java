@@ -6,7 +6,7 @@ Uploaders: Matthias Klose <doko@ubuntu.com>,
            Torsten Werner <twerner@debian.org>,
            Damien Raude-Morvan <drazzib@debian.org>,
            James Page <james.page@ubuntu.com>
-Build-Depends: debhelper (>= 6), default-jdk, javahelper, junit4
+Build-Depends: debhelper (>= 9), default-jdk, javahelper, junit4
 Standards-Version: 3.9.5
 Vcs-Svn: svn://anonscm.debian.org/pkg-java/trunk/ca-certificates-java
 Vcs-Browser: http://anonscm.debian.org/viewvc/pkg-java/trunk/ca-certificates-java/
