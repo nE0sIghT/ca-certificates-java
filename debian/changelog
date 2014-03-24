@@ -1,3 +1,10 @@
+ca-certificates-java (20130816) UNRELEASED; urgency=medium
+
+  * Team upload.
+  * d/control: Standards-Version updated to 3.9.5 (no changes)
+
+ -- Emmanuel Bourg <ebourg@apache.org>  Mon, 24 Mar 2014 09:42:08 +0100
+
 ca-certificates-java (20130815) unstable; urgency=low
 
   * Acknowledge NMU done by Don Armstrong and Andreas Beckmann.
