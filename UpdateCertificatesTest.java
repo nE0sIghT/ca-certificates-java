@@ -33,10 +33,10 @@ import org.junit.Test;
  */
 public class UpdateCertificatesTest {
 
-	private static final String ALIAS_CACERT = "debian:cacert.org_class3.crt";
-	private static final String INVALID_CACERT = "x/usr/share/ca-certificates/cacert.org/cacert.org_class3.crt";
-	private static final String REMOVE_CACERT = "-/usr/share/ca-certificates/cacert.org/cacert.org_class3.crt";
-	private static final String ADD_CACERT = "+/usr/share/ca-certificates/cacert.org/cacert.org_class3.crt";
+	private static final String ALIAS_CACERT   = "debian:spi-cacert-2008.crt";
+	private static final String INVALID_CACERT = "x/usr/share/ca-certificates/spi-inc.org/spi-cacert-2008.crt";
+	private static final String REMOVE_CACERT  = "-/usr/share/ca-certificates/spi-inc.org/spi-cacert-2008.crt";
+	private static final String ADD_CACERT     = "+/usr/share/ca-certificates/spi-inc.org/spi-cacert-2008.crt";
 
 	private String ksFilename = null;
 	private String ksPassword = null;

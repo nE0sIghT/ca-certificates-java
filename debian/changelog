@@ -1,6 +1,8 @@
 ca-certificates-java (20130816) UNRELEASED; urgency=medium
 
   * Team upload.
+  * Fixed a test failure caused by the removal of the CAcert.org root
+    certificate from the ca-certificates package (Closes: #741755)
   * d/control: Standards-Version updated to 3.9.5 (no changes)
   * Switch to debhelper level 9
 
