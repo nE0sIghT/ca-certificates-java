@@ -1,3 +1,13 @@
+ca-certificates-java (20160321) unstable; urgency=medium
+
+  * Team upload.
+  * Drop support for obsolete Java 6 (Closes: #776897)
+  * Add support for Java 8 and 9 (Closes: #775775)
+  * Bump Standards-Version to 3.9.7 (no changes)
+  * Use secure HTTPS URI for Vcs-Browser
+
+ -- Benjamin Drung <benjamin.drung@profitbricks.com>  Mon, 21 Mar 2016 14:34:49 +0100
+
 ca-certificates-java (20140324) unstable; urgency=medium
 
   * Team upload.
