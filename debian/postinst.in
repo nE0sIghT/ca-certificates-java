@@ -26,7 +26,12 @@ nsslib_name()
 
 setup_path()
 {
-    for jvm in java-7-openjdk-$arch java-7-openjdk; do
+    for jvm in java-7-openjdk-$arch java-7-openjdk \
+               oracle-java7-jre-$arch oracle-java7-server-jre-$arch oracle-java7-jdk-$arch \
+               java-8-openjdk-$arch java-8-openjdk \
+               oracle-java8-jre-$arch oracle-java8-server-jre-$arch oracle-java8-jdk-$arch \
+               java-9-openjdk-$arch java-9-openjdk \
+               oracle-java9-jre-$arch oracle-java9-server-jre-$arch oracle-java9-jdk-$arch; do
     if [ -x /usr/lib/jvm/$jvm/bin/java ]; then
         break
         fi
