@@ -10,13 +10,13 @@ ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
 	nss_lib = libnss3
 else
 	SUBSTVARS = -Vnss:Depends="libnss3 (>= 3.12.10-2~)" \
-				-Vjre:Depends="openjdk-6-jre-headless (>= 6b16-1.6.1-2)"
+				-Vjre:Depends="openjdk-7-jre-headless"
 	nss_lib = libnss3
 endif
 
 JAVA_HOME := /usr/lib/jvm/default-java
 export JAVA_HOME
-OPTS := --no-javadoc --main=org.debian.security.UpdateCertificates --javacopts="-source 1.6 -target 1.6"
+OPTS := --no-javadoc --main=org.debian.security.UpdateCertificates --javacopts="-source 1.7 -target 1.7"
 CLASSPATH := /usr/share/java/junit4.jar
 export CLASSPATH
 
@@ -32,7 +32,7 @@ build-stamp:
 	mkdir target
 	jh_build $(OPTS) target/ca-certificates-java.jar src/main/java
 ifeq ($(do_junit),yes)
-	jh_build --no-javadoc --javacopts="-source 1.6 -target 1.6 -cp target/ca-certificates-java.jar:${CLASSPATH}" \
+	jh_build --no-javadoc --javacopts="-source 1.7 -target 1.7 -cp target/ca-certificates-java.jar:${CLASSPATH}" \
 	         target/ca-certificates-java-tests.jar src/test/java
 	mkdir target/test-classes
 	cp -R src/test/resources/* target/test-classes
