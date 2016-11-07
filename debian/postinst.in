@@ -88,29 +88,29 @@ case "$1" in
             fi
         fi
         if [ -z "$2" -o -n "$FIXOLD" ]; then
-        setup_path
+            setup_path
 
-        if ! mountpoint -q /proc; then
-            echo >&2 "the keytool command requires a mounted proc fs (/proc)."
-            exit 1
-        fi
+            if ! mountpoint -q /proc; then
+                echo >&2 "the keytool command requires a mounted proc fs (/proc)."
+                exit 1
+            fi
 
-        temp_jvm_cfg=
-        if [ ! -f /etc/${jvm%-$arch}/jvm-$arch.cfg ]; then
-            # the jre is not yet configured, but jvm.cfg is needed to run it
-            temp_jvm_cfg=/etc/${jvm%-$arch}/jvm-$arch.cfg
-            mkdir -p /etc/${jvm%-$arch}
-            printf -- "-server KNOWN\n" > $temp_jvm_cfg
-        fi
+            temp_jvm_cfg=
+            if [ ! -f /etc/${jvm%-$arch}/jvm-$arch.cfg ]; then
+                # the jre is not yet configured, but jvm.cfg is needed to run it
+                temp_jvm_cfg=/etc/${jvm%-$arch}/jvm-$arch.cfg
+                mkdir -p /etc/${jvm%-$arch}
+                printf -- "-server KNOWN\n" > $temp_jvm_cfg
+            fi
 
-        if first_install; then
-            do_cleanup
-        else
-            do_cleanup
-            exit 1
+            if first_install; then
+                do_cleanup
+            else
+                do_cleanup
+                exit 1
+            fi
         fi
-    fi
-    chmod 600 /etc/default/cacerts || true
+        chmod 600 /etc/default/cacerts || true
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
