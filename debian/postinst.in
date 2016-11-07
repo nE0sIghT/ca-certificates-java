@@ -103,12 +103,8 @@ case "$1" in
                 printf -- "-server KNOWN\n" > $temp_jvm_cfg
             fi
 
-            if first_install; then
-                do_cleanup
-            else
-                do_cleanup
-                exit 1
-            fi
+            trap do_cleanup EXIT
+            first_install
         fi
         chmod 600 /etc/default/cacerts || true
     ;;
