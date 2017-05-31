@@ -1,3 +1,10 @@
+ca-certificates-java (20170531) UNRELEASED; urgency=medium
+
+  * Team upload.
+  * Moved the package to Git
+
+ -- Emmanuel Bourg <ebourg@apache.org>  Wed, 31 May 2017 14:39:26 +0200
+
 ca-certificates-java (20161107) unstable; urgency=medium
 
   * Team upload.
