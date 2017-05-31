@@ -1,6 +1,7 @@
 ca-certificates-java (20170531) UNRELEASED; urgency=medium
 
   * Team upload.
+  * Depend on openjdk-8 instead of openjdk-7 (Closes: #863803)
   * Moved the package to Git
 
  -- Emmanuel Bourg <ebourg@apache.org>  Wed, 31 May 2017 14:39:26 +0200
