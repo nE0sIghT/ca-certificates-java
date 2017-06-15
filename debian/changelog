@@ -1,3 +1,13 @@
+ca-certificates-java (20170531+nmu1) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * Revert to depending on openjdk-7 instead of openjdk-8, since this triggers
+    a failure to dist-upgrade, due to the triggers loop (See: #864597). The
+    openjdk-7 package was dropped from stretch, but the java7-runtime-headless
+    alternative dependency is satisfied by openjdk-8.
+
+ -- Cyril Brulebois <kibi@debian.org>  Thu, 15 Jun 2017 17:33:00 +0200
+
 ca-certificates-java (20170531) unstable; urgency=medium
 
   * Team upload.

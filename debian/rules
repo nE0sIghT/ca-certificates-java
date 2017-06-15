@@ -6,11 +6,11 @@
 
 ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
 	SUBSTVARS = -Vnss:Depends="libnss3 (>= 3.12.9+ckbi-1.82-0ubuntu3~)" \
-				-Vjre:Depends="openjdk-8-jre-headless"
+				-Vjre:Depends="openjdk-7-jre-headless"
 	nss_lib = libnss3
 else
 	SUBSTVARS = -Vnss:Depends="libnss3 (>= 3.12.10-2~)" \
-				-Vjre:Depends="openjdk-8-jre-headless"
+				-Vjre:Depends="openjdk-7-jre-headless"
 	nss_lib = libnss3
 endif
 
