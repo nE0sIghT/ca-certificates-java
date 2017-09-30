@@ -95,18 +95,6 @@ case "$1" in
                 exit 1
             fi
 
-            temp_jvm_cfg=
-            if [ ! -f /etc/${jvm%-$arch}/jvm-$arch.cfg ]; then
-                # the jre is not yet configured, but jvm.cfg is needed to run it
-                temp_jvm_cfg=/etc/${jvm%-$arch}/jvm-$arch.cfg
-                mkdir -p /etc/${jvm%-$arch}
-                if [ "$arch" == "armhf" ]; then
-	                printf -- "-client KNOWN\n-server ALIASED_TO -client\n" > $temp_jvm_cfg
-                else
-	                printf -- "-server KNOWN\n" > $temp_jvm_cfg
-                fi
-            fi
-
             trap do_cleanup EXIT
             first_install
         fi

@@ -1,3 +1,16 @@
+ca-certificates-java (20170930) unstable; urgency=medium
+
+  * Team upload.
+  * Revert the last two NMUs.
+    - Depend again on openjdk-8 after the stretch release.
+    - Stop fiddling around with jvm-*.cfg files. ca-certificates-java
+      has no business with providing an initial cacerts file. This is
+      implemented in the openjdk packages. We are not 2008 anymore.
+  * Bump standards version.
+  * Remove Torsten Werner as uploader.
+
+ -- Matthias Klose <doko@debian.org>  Sat, 30 Sep 2017 02:02:28 +0200
+
 ca-certificates-java (20170929) unstable; urgency=low
 
   [ Gianfranco Costamagna ]
