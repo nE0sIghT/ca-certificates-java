@@ -4,6 +4,7 @@ ca-certificates-java (20170931) UNRELEASED; urgency=medium
   * Always generate a JKS keystore instead of using the default format
     (Closes: #894979)
   * Look for Java 10 and Java 11 when detecting the JRE
+  * Removed Damien Raude-Morvan from the uploaders (Closes: #889412)
   * Standards-Version updated to 4.1.4
   * Switch to debhelper level 11
 
