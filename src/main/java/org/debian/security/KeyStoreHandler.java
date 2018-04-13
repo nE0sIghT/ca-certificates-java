@@ -56,7 +56,7 @@ class KeyStoreHandler {
      * Try to open an existing keystore or create an new one.
      */
     public void load() throws GeneralSecurityException, IOException, InvalidKeystorePasswordException {
-        KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
+        KeyStore ks = KeyStore.getInstance("JKS");
         File file = new File(filename);
         FileInputStream in = null;
         if (file.canRead()) {
