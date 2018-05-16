@@ -1,3 +1,10 @@
+ca-certificates-java (20180413~01) unstable; urgency=medium
+
+  * debian/jks-keystore.hook.in: don't create a jvm-*.cfg file, a default file
+    with the right configuration is already supplied by the openjdk packages.
+
+ -- Tiago Stürmer Daitx <tiago.daitx@ubuntu.com>  Tue, 15 May 2018 02:16:43 +0000
+
 ca-certificates-java (20180413) unstable; urgency=medium
 
   * Team upload.
