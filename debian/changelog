@@ -3,6 +3,8 @@ ca-certificates-java (20180413~01) unstable; urgency=medium
   [ Tiago Stürmer Daitx ]
   * debian/jks-keystore.hook.in: don't create a jvm-*.cfg file, a default file
     with the right configuration is already supplied by the openjdk packages.
+  * debian/jks-keystore.hook.in, debian/postinst.in: Only export JAVA_HOME
+    and update PATH if a known jvm was found.
 
   [ Matthias Klose ]
   * debian/rules: Explicitly depend on openjdk-11-jre-headless, needed to

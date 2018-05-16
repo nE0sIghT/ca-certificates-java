@@ -35,12 +35,12 @@ setup_path()
                oracle-java10-jre-$arch oracle-java10-server-jre-$arch oracle-java10-jdk-$arch \
                java-11-openjdk-$arch java-11-openjdk \
                oracle-java11-jre-$arch oracle-java11-server-jre-$arch oracle-java11-jdk-$arch; do
-    if [ -x /usr/lib/jvm/$jvm/bin/java ]; then
-        break
+        if [ -x /usr/lib/jvm/$jvm/bin/java ]; then
+            export JAVA_HOME=/usr/lib/jvm/$jvm
+            PATH=$JAVA_HOME/bin:$PATH
+            break
         fi
     done
-    export JAVA_HOME=/usr/lib/jvm/$jvm
-    PATH=$JAVA_HOME/bin:$PATH
 }
 
 first_install()
