@@ -43,6 +43,14 @@ setup_path()
     done
 }
 
+check_proc()
+{
+    if ! mountpoint -q /proc; then
+        echo >&2 "the keytool command requires a mounted proc fs (/proc)."
+        exit 1
+    fi
+}
+
 first_install()
 {
     if which dpkg-query >/dev/null; then
@@ -95,12 +103,7 @@ case "$1" in
         setup_path
 
         if [ -z "$2" -o -n "$FIXOLD" ]; then
-
-            if ! mountpoint -q /proc; then
-                echo >&2 "the keytool command requires a mounted proc fs (/proc)."
-                exit 1
-            fi
-
+            check_proc
             trap do_cleanup EXIT
             first_install
         fi
