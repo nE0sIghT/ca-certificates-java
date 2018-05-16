@@ -51,6 +51,27 @@ check_proc()
     fi
 }
 
+convert_pkcs12_keystore_to_jks()
+{
+    if ! keytool -importkeystore \
+                 -srckeystore /etc/ssl/certs/java/cacerts \
+                 -destkeystore /etc/ssl/certs/java/cacerts.dpkg-new \
+                 -srcstoretype PKCS12 \
+                 -deststoretype JKS \
+                 -srcstorepass "$storepass" \
+                 -deststorepass "$storepass" \
+                 -noprompt; then
+        echo "failed to convert PKCS12 keystore to JKS" >&2
+        exit 1
+    fi
+
+    # only update if /etc/default/cacerts allows
+    if [ "$cacerts_updates" = "yes" ]; then
+        mv -f /etc/ssl/certs/java/cacerts /etc/ssl/certs/java/cacerts.dpkg-old
+        mv -f /etc/ssl/certs/java/cacerts.dpkg-new /etc/ssl/certs/java/cacerts
+    fi
+}
+
 first_install()
 {
     if which dpkg-query >/dev/null; then
@@ -101,6 +122,14 @@ case "$1" in
         fi
 
         setup_path
+
+        if dpkg --compare-versions "$2" lt "20180516"; then
+            if [ -e /etc/ssl/certs/java/cacerts \
+                 -a "$(head -c4 /etc/ssl/certs/java/cacerts)" != "$(echo -en '\xfe\xed\xfe\xed')" ]; then
+                check_proc
+                convert_pkcs12_keystore_to_jks
+            fi
+        fi
 
         if [ -z "$2" -o -n "$FIXOLD" ]; then
             check_proc
