@@ -91,8 +91,10 @@ case "$1" in
                 cp -f /etc/ssl/certs/java/cacerts /etc/ssl/certs/java/cacerts.dpkg-old
             fi
         fi
+
+        setup_path
+
         if [ -z "$2" -o -n "$FIXOLD" ]; then
-            setup_path
 
             if ! mountpoint -q /proc; then
                 echo >&2 "the keytool command requires a mounted proc fs (/proc)."
