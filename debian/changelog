@@ -1,7 +1,12 @@
 ca-certificates-java (20180413~01) unstable; urgency=medium
 
+  [ Tiago Stürmer Daitx ]
   * debian/jks-keystore.hook.in: don't create a jvm-*.cfg file, a default file
     with the right configuration is already supplied by the openjdk packages.
+
+  [ Matthias Klose ]
+  * debian/rules: Explicitly depend on openjdk-11-jre-headless, needed to
+    configure.
 
  -- Tiago Stürmer Daitx <tiago.daitx@ubuntu.com>  Tue, 15 May 2018 02:16:43 +0000
 
