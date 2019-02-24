@@ -1,3 +1,10 @@
+ca-certificates-java (20170929~deb9u2) stretch; urgency=medium
+
+  * Team upload.
+  * Address bashisms in postinst and jks-keystore (Closes: #922720)
+
+ -- tony mancill <tmancill@debian.org>  Sun, 24 Feb 2019 09:55:04 -0800
+
 ca-certificates-java (20170929~deb9u1) stretch; urgency=medium
 
   * Rebuild for stretch.
