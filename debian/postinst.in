@@ -34,7 +34,19 @@ setup_path()
                java-10-openjdk-$arch java-10-openjdk \
                oracle-java10-jre-$arch oracle-java10-server-jre-$arch oracle-java10-jdk-$arch \
                java-11-openjdk-$arch java-11-openjdk \
-               oracle-java11-jre-$arch oracle-java11-server-jre-$arch oracle-java11-jdk-$arch; do
+               oracle-java11-jre-$arch oracle-java11-server-jre-$arch oracle-java11-jdk-$arch \
+               java-12-openjdk-$arch java-12-openjdk \
+               oracle-java12-jre-$arch oracle-java12-server-jre-$arch oracle-java12-jdk-$arch \
+               java-13-openjdk-$arch java-13-openjdk \
+               oracle-java13-jre-$arch oracle-java13-server-jre-$arch oracle-java13-jdk-$arch \
+               java-14-openjdk-$arch java-14-openjdk \
+               oracle-java14-jre-$arch oracle-java14-server-jre-$arch oracle-java14-jdk-$arch \
+               java-15-openjdk-$arch java-15-openjdk \
+               oracle-java15-jre-$arch oracle-java15-server-jre-$arch oracle-java15-jdk-$arch \
+               java-16-openjdk-$arch java-16-openjdk \
+               oracle-java16-jre-$arch oracle-java16-server-jre-$arch oracle-java16-jdk-$arch \
+               java-17-openjdk-$arch java-17-openjdk \
+               oracle-java17-jre-$arch oracle-java17-server-jre-$arch oracle-java17-jdk-$arch; do
         if [ -x /usr/lib/jvm/$jvm/bin/java ]; then
             export JAVA_HOME=/usr/lib/jvm/$jvm
             PATH=$JAVA_HOME/bin:$PATH
