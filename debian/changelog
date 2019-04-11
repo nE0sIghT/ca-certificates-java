@@ -1,3 +1,10 @@
+ca-certificates-java (20170929~deb9u3) stretch; urgency=medium
+
+  * Team upload.
+  * Fix printf syntax problem introduced in 20170929~deb9u2
+
+ -- tony mancill <tmancill@debian.org>  Wed, 10 Apr 2019 19:59:01 -0700
+
 ca-certificates-java (20170929~deb9u2) stretch; urgency=medium
 
   * Team upload.
