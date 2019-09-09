@@ -6,10 +6,8 @@
 
 ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
 	SUBSTVARS = -Vjre:Depends="openjdk-11-jre-headless"
-	nss_lib = libnss3
 else
 	SUBSTVARS = -Vjre:Depends="openjdk-8-jre-headless"
-	nss_lib = libnss3
 endif
 
 JAVA_HOME := /usr/lib/jvm/default-java
@@ -46,10 +44,6 @@ clean:
 	jh_build --clean
 	$(RM) -R build-stamp target
 	dh_clean
-	for f in debian/*.in; do \
-	  f2=$$(echo $$f | sed ';s/\.in$$//'); \
-	  rm -f $$f2; \
-	done
 
 install: build
 	dh_testdir
@@ -60,11 +54,6 @@ install: build
 		etc/default \
 		etc/ssl/certs/java \
 		etc/ca-certificates/update.d
-	for f in debian/*.in; do \
-	  f2=$$(echo $$f | sed 's/\.in$$//'); \
-	  sed -e 's/@NSS_LIB@/$(nss_lib)/g' \
-	    $$f > $$f2; \
-	done
 	install -m755 debian/jks-keystore.hook \
 		$(d)/etc/ca-certificates/update.d/jks-keystore
 	install -m600 debian/default \

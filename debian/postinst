@@ -17,9 +17,9 @@ JAR=/usr/share/ca-certificates-java/ca-certificates-java.jar
 nsslib_name()
 {
     if dpkg --assert-multi-arch 2>/dev/null; then
-        echo "@NSS_LIB@:${arch}"
+        echo "libnss3:${arch}"
     else
-        echo "@NSS_LIB@"
+        echo "libnss3"
     fi
 }
 
