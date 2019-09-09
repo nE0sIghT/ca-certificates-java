@@ -14,8 +14,8 @@ Architecture: all
 Multi-Arch: foreign
 Depends: ca-certificates (>= 20121114),
          default-jre-headless | java8-runtime-headless,
-         ${misc:Depends},
-         ${nss:Depends}
+         libnss3 (>= 3.12.10-2~),
+         ${misc:Depends}
 # We need a versioned Depends due to multiarch changes (bug #635571).
 Description: Common CA certificates (JKS keystore)
  This package uses the hooks of the ca-certificates package to update the
