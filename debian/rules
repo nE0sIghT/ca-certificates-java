@@ -4,12 +4,6 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
-	SUBSTVARS = -Vjre:Depends="openjdk-11-jre-headless"
-else
-	SUBSTVARS = -Vjre:Depends="openjdk-8-jre-headless"
-endif
-
 JAVA_HOME := /usr/lib/jvm/default-java
 export JAVA_HOME
 OPTS := --no-javadoc --main=org.debian.security.UpdateCertificates --javacopts="-source 1.7 -target 1.7"
@@ -69,7 +63,7 @@ binary-indep: build install
 	dh_compress
 	dh_fixperms
 	dh_installdeb
-	dh_gencontrol -- $(SUBSTVARS)
+	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
 

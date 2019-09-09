@@ -3,6 +3,7 @@ ca-certificates-java (20190909) UNRELEASED; urgency=medium
   * Team upload.
   * Removed the ${nss:Depends} substvar
   * Removed the @NSS_LIB@ template parameter
+  * Removed the now unused ${jre:Depends} substvar
 
  -- Emmanuel Bourg <ebourg@apache.org>  Mon, 09 Sep 2019 10:11:53 +0200
 
