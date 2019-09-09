@@ -5,6 +5,7 @@ ca-certificates-java (20190909) UNRELEASED; urgency=medium
   * Removed the @NSS_LIB@ template parameter
   * Removed the now unused ${jre:Depends} substvar
   * Build with the DH sequencer
+  * Standards-Version updated to 4.4.0
 
  -- Emmanuel Bourg <ebourg@apache.org>  Mon, 09 Sep 2019 10:11:53 +0200
 
