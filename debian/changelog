@@ -18,7 +18,7 @@ ca-certificates-java (20190214) unstable; urgency=medium
   * Team upload.
   * Declare compliance with Debian Policy 4.3.0.
   * ca-certificates-java: Depend on default-jre-headless to avoid a circular dependency on
-    a specific OpenJDK package. (Closes: #864657)
+    a specific OpenJDK package. (Closes: #864657, #910138)
 
  -- Markus Koschany <apo@debian.org>  Thu, 14 Feb 2019 22:21:15 +0100
 
