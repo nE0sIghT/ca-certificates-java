@@ -1,4 +1,4 @@
-ca-certificates-java (20190909) UNRELEASED; urgency=medium
+ca-certificates-java (20190909) unstable; urgency=medium
 
   * Team upload.
   * Removed the ${nss:Depends} substvar
@@ -7,7 +7,7 @@ ca-certificates-java (20190909) UNRELEASED; urgency=medium
   * Build with the DH sequencer
   * Standards-Version updated to 4.4.0
 
- -- Emmanuel Bourg <ebourg@apache.org>  Mon, 09 Sep 2019 10:11:53 +0200
+ -- Emmanuel Bourg <ebourg@apache.org>  Mon, 09 Sep 2019 11:56:28 +0200
 
 ca-certificates-java (20190405) unstable; urgency=medium
 
